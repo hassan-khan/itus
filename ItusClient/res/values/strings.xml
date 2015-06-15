@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ItusDemo</string>
+    <string name="label_itus_status">Itus Status</string>
+    <string name="label_itus_state">Itus State: </string>
+    <string name="label_training_threshold">Training Threshold: </string>
+    <string name="label_training_size">Training set size: </string>
+    <string name="label_classification_score">Score window: </string>
+    <string name="blank"></string>
+    <string name="action_settings">Settings</string>
+
+</resources>

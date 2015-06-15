@@ -1,0 +1,17 @@
+#Itus oracle configurations. '#' prefix indicates comment
+
+#path to the dataset
+dataset_path=./res/
+#If logs less than min_data_sources, the data source will be skipped
+min_data_sources=4
+#touchevent dataset prefix. Suffix must be unique for indiv. users
+touch_prefix=itus_touch_data_
+#min touch data size of an individual to be considered
+min_swipes=20
+#soft keystroke dataset prefix. Suffix must be unique for indiv. users
+keystroke_prefix=itus_keystroke_data_
+#min keystrokes of an individual to be considered
+min_keystrokes=50
+#train-test ratio; [a single float < 1 indicates the ratio of training set size]
+# a value of 0.7 -> 70% training and 30% test
+train_test_ratio=0.5
