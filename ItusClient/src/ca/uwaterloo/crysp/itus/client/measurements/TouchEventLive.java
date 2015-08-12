@@ -110,5 +110,4 @@ public class TouchEventLive extends TouchEvent {
 	public Measurement newInstance() {
 		return new TouchEventLive();
 	}
-
 }
