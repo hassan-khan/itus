@@ -21,6 +21,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.EditText;
+import android.widget.TextView;
 import ca.uwaterloo.crysp.itus.Itus;
 import ca.uwaterloo.crysp.itus.measurements.EventType;
 
@@ -32,6 +33,7 @@ import ca.uwaterloo.crysp.itus.measurements.EventType;
  *
  */
 public class SecureActivity extends Activity {
+	public static TextView textView = null;
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		Itus.getItus().getDispatcher().procEvent(EventType.TOUCH_INPUT, ev);
@@ -55,23 +57,10 @@ public class SecureActivity extends Activity {
 	 * classification
 	 * @return True if successful
 	 */
-	public static boolean setEditText(EditText et) {
-		if (!(et instanceof EditText))
+	public static boolean setTextView(TextView tv) {
+		if (!(tv instanceof TextView))
 			return false;
-		et.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {           
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            	Itus.getItus().getDispatcher().procEvent(EventType.KEY_INPUT, s.toString());
-            }
-        });
+		textView = tv;
 		return true;
 	}
 }

@@ -17,6 +17,7 @@ package ca.uwaterloo.crysp.itus.prefabs;
 import java.util.Arrays;
 
 import ca.uwaterloo.crysp.itus.Itus;
+import ca.uwaterloo.crysp.itus.Parameters;
 import ca.uwaterloo.crysp.itus.machinelearning.Classifier;
 import ca.uwaterloo.crysp.itus.machinelearning.KNNClassifier;
 import ca.uwaterloo.crysp.itus.measurements.TouchEvent;
@@ -55,10 +56,16 @@ public class Touchalytics extends Itus {
 		//Touchalytics uses features defined at the index 0-29 in featureList
 		touchEvent.setFeatureList(
 				Arrays.copyOfRange(TouchEvent.featureList, 0, 29));
-		Classifier classifier = new KNNClassifier(k, numFeatures);
+		Object model = Classifier.retreiveModelFromStorage();
+		Classifier classifier = null;
+		if (model == null)
+			classifier = new KNNClassifier(k, numFeatures);
+		else
+			classifier = new KNNClassifier(model);
 		
 		useMeasurement(touchEvent);
 		useClassifier(classifier);
+		Parameters.setOnlineMode();
 	}
 	public static RunConfiguration getRecommendedConfiguration(
 			TouchEvent touchEvent) {

@@ -101,7 +101,7 @@ public class KNNClassifier extends Classifier {
 			this.distance = distance;
 		}
 	}
-	public KNNModel model;
+	public KNNModel model = null;
 	
 	/**
 	 * constructor for KNNClassifier

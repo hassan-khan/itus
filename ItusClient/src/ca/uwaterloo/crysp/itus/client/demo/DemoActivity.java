@@ -19,11 +19,13 @@ import java.util.ArrayList;
 import ca.uwaterloo.crysp.itus.Parameters;
 import ca.uwaterloo.crysp.itus.client.R;
 import ca.uwaterloo.crysp.itus.client.SecureActivity;
+import ca.uwaterloo.crysp.itus.client.measurements.KeyEventLive;
 import ca.uwaterloo.crysp.itus.client.measurements.TouchEventLive;
 import ca.uwaterloo.crysp.itus.client.storage.PermanentStorageAndroid;
 import ca.uwaterloo.crysp.itus.client.utils.AndroidPatternWrapper;
 import ca.uwaterloo.crysp.itus.client.utils.SharedPreferenceWrapper;
 import ca.uwaterloo.crysp.itus.machinelearning.ClassifierState;
+import ca.uwaterloo.crysp.itus.prefabs.KeystrokeClassifier;
 import ca.uwaterloo.crysp.itus.prefabs.Touchalytics;
 import ca.uwaterloo.crysp.itus.storage.BinLabel;
 import ca.uwaterloo.crysp.itus.storage.DataStorage;
@@ -67,9 +69,15 @@ public class DemoActivity extends SecureActivity {
         TouchEventLive touchEventLive = new TouchEventLive();
         touchalytics = new Touchalytics(touchEventLive);
         touchalytics.start();
+        Parameters.setOnlineMode();
+        /*TextView tv = (TextView) findViewById(R.id.editText);
+        super.setTextView(tv);
+        KeyEventLive kel = new KeyEventLive(tv);
+        KeystrokeClassifier kc = new KeystrokeClassifier(kel);
+        kc.start();*/
     }
 
-    @Override
+    /*@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
     	StringBuilder strScore = new StringBuilder();
     	TextView textView = (TextView) findViewById(R.id.itus_state);
@@ -108,9 +116,8 @@ public class DemoActivity extends SecureActivity {
         	textView.setText(strScore.toString());
     	}
 		return super.dispatchTouchEvent(ev);
-	}
+	}*/
     
-    //11572; 6555
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

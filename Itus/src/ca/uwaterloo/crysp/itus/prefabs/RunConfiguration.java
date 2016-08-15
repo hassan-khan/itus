@@ -35,6 +35,7 @@ public class RunConfiguration {
 	//private svm_model svmModel;
 	//private svm_parameter svmParameter;
 	
+
 	/**
 	 * Returns a run configuration with given parameters for KNNClassifier
 	 * @param k

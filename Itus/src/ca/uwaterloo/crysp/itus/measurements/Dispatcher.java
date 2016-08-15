@@ -71,11 +71,11 @@ public class Dispatcher {
 	public void procEvent(EventType eventType, Object ev) {
 		if (!callbackRegister.containsKey(eventType)) 
 			return;
-		
 		ArrayList<Measurement> measurements = callbackRegister.get(eventType);
 		for (int i = 0; i < measurements.size(); i++) {
 			Measurement measurement = measurements.get(i);
 			if (measurement.procEvent((Object)ev, eventType)) {
+				//System.out.println("Add to DS");
 				if(Parameters.getMode() ==  Parameters.Mode.CONFIG_MODE) {
 					try{ Itus.getPermanentStorage().log(
 							Parameters.getTouchlogfilename(), 

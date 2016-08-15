@@ -53,7 +53,7 @@ public abstract class Classifier {
 	 * Returns the state of the classifier
 	 * @return the current state of the classifier
 	 */
-	ClassifierState getState() {
+	public ClassifierState getState() {
 		return this.state;
 	}
 	
@@ -110,13 +110,13 @@ public abstract class Classifier {
 	 * Retrieves the model file from storage 
 	 * @return retrieved model file
 	 */
-	public Object retreiveModelFromStorage() {
+	public static Object retreiveModelFromStorage() {
 		Object model = null;
 		try{
 			model = Parameters.getPermanentStorageInstance().retrieveModel(
 				Parameters.getModelFileName());
 		} catch (Exception e) {
-			e.printStackTrace();
+			return model;	//return null model
 		}
 		return model;
 	}

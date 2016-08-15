@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.uwaterloo.crysp.itus.machinelearning.Classifier;
+import ca.uwaterloo.crysp.itus.machinelearning.ClassifierState;
 import ca.uwaterloo.crysp.itus.measurements.Dispatcher;
-import ca.uwaterloo.crysp.itus.measurements.EventType;
 import ca.uwaterloo.crysp.itus.measurements.Measurement;
 import ca.uwaterloo.crysp.itus.storage.BinLabel;
 import ca.uwaterloo.crysp.itus.storage.DataStorage;
@@ -41,7 +41,7 @@ public class Itus extends Thread {
 	/**
 	 * The classifier to use with this Itus instance
 	 */
-	private static Classifier classifier = null;
+	static Classifier classifier = null;
 	
 	private Measurement measurement;
 	/**
@@ -102,10 +102,10 @@ public class Itus extends Thread {
 	 * this loop will not exit until Itus state is changed to pause.
 	 */
 	public void run() {
-		if (Parameters.getMode() == Parameters.Mode.CONFIG_MODE)
+		if (Parameters.getMode() == Parameters.Mode.CONFIG_MODE) 
 			return;
+			
 		Parameters.setItusState(Parameters.State.RUNNING);
-		
 		while (Parameters.getItusState() != Parameters.State.STOPPED) {
 			
 			if (enoughData()) {	//System.out.println("enough data...");
@@ -117,8 +117,10 @@ public class Itus extends Thread {
 					if (Parameters.getMode() == Parameters.Mode.ONLINE_MODE) {
 						List <FeatureVector> dataset = 
 								DataStorage.getAll(BinLabel.BIN_TRAIN);
-						dataset.addAll(measurement.defaultNegativeInstances());
+						if (measurement.defaultNegativeInstances() != null)
+							dataset.addAll(measurement.defaultNegativeInstances());
 						state = classifier.train(dataset);
+						classifier.saveModel(classifier.getModel());
 					}
 					else {
 						state = classifier.train(
@@ -144,7 +146,8 @@ public class Itus extends Thread {
 			//else
 			//	System.out.println("Not enough data");
 			try {
-				dispatcher.procEvent(EventType.PERIODIC_EVENT, null);
+				//XXX
+				//dispatcher.procEvent(EventType.PERIODIC_EVENT, null);
 				Thread.sleep(Parameters.getItusPeriod());
 			} catch (InterruptedException e) {}
 		}
@@ -159,6 +162,11 @@ public class Itus extends Thread {
 		/*System.out.println("Train bin Size: " 
 				+ String.valueOf(DataStorage.binSize(BinLabel.BIN_TRAIN)) + 
 				" Training Threshold: " + Parameters.getTrainingThreshold());*/
+		if (classifier != null)
+			if(classifier.getState() == ClassifierState.TRAINED) {
+				enoughDataTrigger = true;
+				return true;
+			}
 		return DataStorage.binSize(BinLabel.BIN_TRAIN) >= 
 				Parameters.getTrainingThreshold();
 	}
@@ -179,7 +187,14 @@ public class Itus extends Thread {
 	public Dispatcher getDispatcher() {
 		return dispatcher;
 	}
-	
+	/**
+	 * Gets the classifier for this Itus Agent
+	 * 
+	 * @return classifier
+	 */
+	public Classifier getClassifier() {
+		return classifier;
+	}
 	/**
 	 * Returns score history for the current classifier and clears history
 	 * @return score history for the current classifier

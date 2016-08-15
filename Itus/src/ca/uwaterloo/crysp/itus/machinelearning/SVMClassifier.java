@@ -148,6 +148,7 @@ public class SVMClassifier extends Classifier {
 
 	    double[] prob_estimates = new double[totalClasses];
 	    svm.svm_predict_probability(this.model, nodes, prob_estimates);
+	    
 	    if (prob_estimates[0] >= prob_estimates[1])
 	    	return 1;
 	    else
